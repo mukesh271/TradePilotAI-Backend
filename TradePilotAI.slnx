@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="TradePilot.Api/TradePilot.Api.csproj" />
+  <Project Path="TradePilot.Domain/TradePilot.Domain.csproj" />
+  <Project Path="TradePilot.Infrastructure/TradePilot.Infrastructure.csproj" />
+  <Project Path="TradePilot.Tests/TradePilot.Tests.csproj" />
+  <Project Path="TradePilot.Worker/TradePilot.Worker.csproj" />
+</Solution>
