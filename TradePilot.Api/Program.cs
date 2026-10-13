@@ -22,6 +22,8 @@ builder.Services.AddDbContext<TradePilotDbContext>(options =>
 
 // Add application services
 builder.Services.AddScoped<IRiskManagementService, RiskManagementService>();
+builder.Services.AddScoped<IIndicatorCalculationService, IndicatorCalculationService>();
+builder.Services.AddScoped<IStrategyEvaluationService, StrategyEvaluationService>();
 
 // Add logging
 builder.Logging.AddConsole();

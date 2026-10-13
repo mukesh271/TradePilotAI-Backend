@@ -29,6 +29,8 @@ public class TradePilotDbContext : DbContext
 
     public DbSet<News> News => Set<News>();
 
+    public DbSet<Candle> Candles => Set<Candle>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Instrument configuration
@@ -190,5 +192,41 @@ public class TradePilotDbContext : DbContext
 
         modelBuilder.Entity<News>()
             .HasIndex(x => x.Sentiment);
+
+        // Candle configuration
+        modelBuilder.Entity<Candle>()
+            .Property(x => x.Timeframe)
+            .HasMaxLength(10)
+            .IsRequired();
+
+        modelBuilder.Entity<Candle>()
+            .Property(x => x.Open)
+            .HasPrecision(18, 4);
+
+        modelBuilder.Entity<Candle>()
+            .Property(x => x.High)
+            .HasPrecision(18, 4);
+
+        modelBuilder.Entity<Candle>()
+            .Property(x => x.Low)
+            .HasPrecision(18, 4);
+
+        modelBuilder.Entity<Candle>()
+            .Property(x => x.Close)
+            .HasPrecision(18, 4);
+
+        modelBuilder.Entity<Candle>()
+            .Property(x => x.Volume)
+            .HasPrecision(18, 4);
+
+        modelBuilder.Entity<Candle>()
+            .HasOne(x => x.Instrument)
+            .WithMany()
+            .HasForeignKey(x => x.InstrumentId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Candle>()
+            .HasIndex(x => new { x.InstrumentId, x.Timeframe, x.TimestampUtc })
+            .IsUnique();
     }
 }
