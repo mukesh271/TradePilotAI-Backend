@@ -11,6 +11,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add CORS policy for frontend integration (e.g. Angular dev server)
+const string FrontendCorsPolicy = "FrontendCorsPolicy";
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? ["http://localhost:4200"];
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(FrontendCorsPolicy, policy =>
+    {
+        policy.WithOrigins(allowedOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 // Add database context
 builder.Services.AddDbContext<TradePilotDbContext>(options =>
     options.UseSqlServer(
@@ -33,6 +48,8 @@ var app = builder.Build();
 
 // Add global exception handling middleware
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
+app.UseCors(FrontendCorsPolicy);
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
